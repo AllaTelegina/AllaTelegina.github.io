@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Portfolio website of Alla Telegina - UI/UX Designer">
+        <title>Project Brief | Alla Telegina</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+<!-- Swiper CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+
+<!-- Swiper JS -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+<script src="https://unpkg.com/scrollreveal"></script>
+
+        <!-- Boxicons -->
+         <link href='https://unpkg.com/boxicons.min.css' rel='stylesheet'>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/boxicons/2.1.4/css/boxicons.min.css">
+        <!-- Custom CSS -->
+        <link rel="stylesheet" href="../style.css">
+         
+    </head>
+  
+<body>
+    <my-header></my-header>
+
+ <main>
+    <a href="#" class="scroll-to-top"><i class='bx bx-up-arrow-alt'></i></a>
+
+ <nav class="breadcrumbs">
+      <a href="/">Home </a> / <span> Brief</span>
+    </nav>
+
+<!-- services section design -->
+<div class="brief">
+  <section class="services" id="brief">
+
+    <h2 class="heading">
+      Project <span>Brief</span>
+    </h2>
+
+    <div class="container">
+      
+      <div id="calculatorSummary" class="calculator-summary" style="display: none;">
+
+  <h3>Project estimate</h3>
+
+  <p>
+    Your selections from the price calculator are shown below.
+    Mention any changes in the project details below.
+  </p>
+
+  <div id="calculatorSummaryContent"></div>
+
+</div>
+
+
+
+      <div class="services-container">
+
+        <form id="briefForm" action="https://api.web3forms.com/submit" method="POST">
+          <input type="hidden" name="access_key" value="YOUR_ACCESS_KEY_HERE">
+
+          <!-- =========================
+               1. CONTACT INFORMATION
+          ========================== -->
+
+          <h3>1. Contact Information</h3>
+
+          <label>
+            Contact person / position
+            <input
+              type="text"
+              name="contact_person"
+              placeholder="Full name and position"
+            />
+          </label>
+
+          <label>
+            Contact information
+            <textarea
+              name="contact_info"
+              rows="2"
+              placeholder="Email, Telegram, phone..."
+            ></textarea>
+          </label>
+
+
+          <!-- =========================
+               2. PROJECT INFORMATION
+          ========================== -->
+
+          <h3>2. Project Information</h3>
+
+          <label>
+            What services are you interested in?
+          </label>
+
+          <div class="checkbox-group">
+
+            <label>
+              <input type="checkbox" name="service[]" value="web-design">
+              Web Design
+            </label>
+
+            <label>
+              <input type="checkbox" name="service[]" value="frontend">
+              Frontend Development
+            </label>
+
+            <label>
+              <input type="checkbox" name="service[]" value="logo">
+              Logo Design
+            </label>
+
+            <label>
+              <input type="checkbox" name="service[]" value="banner">
+              Banner / Advertising Graphic
+            </label>
+
+            <label>
+              <input type="checkbox" name="service[]" value="presentation">
+              Presentation Design
+            </label>
+
+            <label>
+              <input type="checkbox" name="service[]" value="backend">
+              Backend / Custom Functionality
+            </label>
+
+            <label>
+              <input type="checkbox" name="service[]" value="other">
+              Other
+            </label>
+
+          </div>
+
+
+          <label>
+            Company / Brand name
+            <input
+              type="text"
+              name="company_name"
+              placeholder="Company or brand name"
+            />
+          </label>
+
+          <label>
+            What does your company / project do?
+            <textarea
+              name="business"
+              rows="3"
+              placeholder="Briefly describe your business, product or project"
+            ></textarea>
+          </label>
+
+          <label>
+            Website / social media
+            <textarea
+              name="website_links"
+              rows="2"
+              placeholder="Website, Instagram, LinkedIn, etc."
+            ></textarea>
+          </label>
+
+
+          <!-- =========================
+               3. PROJECT GOAL
+          ========================== -->
+
+          <h3>3. Project Goal</h3>
+
+          <label>
+            What is the main goal of the project?
+            <textarea
+              name="project_goal"
+              rows="3"
+              placeholder="Sell products, get inquiries, present your business, build a brand, etc."
+            ></textarea>
+          </label>
+
+          <label>
+            Who is your target audience?
+            <textarea
+              name="target_audience"
+              rows="3"
+              placeholder="Who are your customers or users?"
+            ></textarea>
+          </label>
+
+          <label>
+            What action should the user / customer take?
+            <textarea
+              name="desired_action"
+              rows="2"
+              placeholder="Buy, contact, book, register, download, request a quote..."
+            ></textarea>
+          </label>
+
+
+          <!-- =========================
+               4. WEBSITE
+          ========================== -->
+
+          <div id="websiteBrief">
+
+            <h3>4. Website</h3>
+
+            <label>
+              Type of website
+            </label>
+
+            <div class="checkbox-group">
+
+              <label>
+                <input type="checkbox" name="website_type[]" value="landing">
+                Landing Page
+              </label>
+
+              <label>
+                <input type="checkbox" name="website_type[]" value="personal">
+                Personal Website
+              </label>
+
+              <label>
+                <input type="checkbox" name="website_type[]" value="business">
+                Business Website
+              </label>
+
+              <label>
+                <input type="checkbox" name="website_type[]" value="multipage">
+                Multipage Website
+              </label>
+
+              <label>
+                <input type="checkbox" name="website_type[]" value="ecommerce">
+                E-commerce
+              </label>
+
+              <label>
+                <input type="checkbox" name="website_type[]" value="other">
+                Other
+              </label>
+
+            </div>
+
+
+            <label>
+              Website structure
+              <textarea
+                name="website_structure"
+                rows="3"
+                placeholder="Home, About, Services, Contact, Blog, etc."
+              ></textarea>
+            </label>
+
+            <label>
+              How many pages do you need approximately?
+              <input
+                type="number"
+                name="page_count"
+                min="1"
+                placeholder="e.g. 5"
+              />
+            </label>
+
+            <label>
+              Which page is the most important?
+              <input
+                type="text"
+                name="main_page"
+                placeholder="e.g. Home / Landing page"
+              />
+            </label>
+
+            <label>
+              Do you already have the content?
+            </label>
+
+            <div class="checkbox-group">
+
+              <label>
+                <input type="checkbox" name="content[]" value="text">
+                Text
+              </label>
+
+              <label>
+                <input type="checkbox" name="content[]" value="photos">
+                Photos
+              </label>
+
+              <label>
+                <input type="checkbox" name="content[]" value="illustrations">
+                Illustrations
+              </label>
+
+              <label>
+                <input type="checkbox" name="content[]" value="product-info">
+                Product information
+              </label>
+
+              <label>
+                <input type="checkbox" name="content[]" value="none">
+                Not yet
+              </label>
+
+            </div>
+
+          </div>
+
+
+          <!-- =========================
+               5. VISUAL STYLE
+          ========================== -->
+
+          <h3>5. Visual Direction</h3>
+
+          <label>
+            What should the design feel like?
+            <textarea
+              name="visual_style"
+              rows="3"
+              placeholder="Modern, minimal, premium, friendly, creative, elegant..."
+            ></textarea>
+          </label>
+
+          <label>
+            Preferred colors
+            <textarea
+              name="preferred_colors"
+              rows="2"
+              placeholder="Brand colors, light/dark theme, etc."
+            ></textarea>
+          </label>
+
+          <label>
+            Colors / styles to avoid
+            <textarea
+              name="avoid_colors"
+              rows="2"
+              placeholder="Anything you definitely don't want"
+            ></textarea>
+          </label>
+
+
+          <!-- =========================
+               REFERENCES
+          ========================== -->
+
+          <label>
+            Websites / designs you like
+            <textarea
+              name="liked_references"
+              rows="4"
+              placeholder="Up to 3 links + what exactly you like about each one"
+            ></textarea>
+          </label>
+
+          <label>
+            Websites / designs you don't like
+            <textarea
+              name="disliked_references"
+              rows="4"
+              placeholder="Up to 3 links + what you would like to avoid"
+            ></textarea>
+          </label>
+
+
+          <!-- =========================
+               6. LOGO
+          ========================== -->
+
+          <div id="logoBrief">
+
+            <h3>6. Logo Design</h3>
+
+            <label>
+              Is this a new logo or a redesign?
+            </label>
+
+            <div class="checkbox-group">
+
+              <label>
+                <input type="checkbox" name="logo_type" value="new">
+                New Logo
+              </label>
+
+              <label>
+                <input type="checkbox" name="logo_type" value="redesign">
+                Redesign
+              </label>
+
+            </div>
+
+            <label>
+              Is there a slogan / tagline?
+              <input
+                type="text"
+                name="logo_slogan"
+                placeholder="Optional"
+              />
+            </label>
+
+            <label>
+              Preferred logo type
+            </label>
+
+            <div class="checkbox-group">
+
+              <label>
+                <input type="checkbox" name="logo_style[]" value="wordmark">
+                Wordmark (Название)
+              </label>
+
+              <label>
+                <input type="checkbox" name="logo_style[]" value="symbol-name">
+                Symbol + Name
+              </label>
+
+              <label>
+                <input type="checkbox" name="logo_style[]" value="symbol">
+                Symbol
+              </label>
+
+              <label>
+                <input type="checkbox" name="logo_style[]" value="monogram">
+                Monogram
+              </label>
+
+              <label>
+                <input type="checkbox" name="logo_style[]" value="no-preference">
+                No preference
+              </label>
+
+            </div>
+
+            <label>
+              Where will the logo be used?
+              <textarea
+                name="logo_usage"
+                rows="3"
+                placeholder="Website, social media, packaging, print, signage, merchandise..."
+              ></textarea>
+            </label>
+
+            <label>
+              If redesign — what would you like to keep or change?
+              <textarea
+                name="logo_redesign"
+                rows="3"
+                placeholder="What should stay and what should be changed?"
+              ></textarea>
+            </label>
+
+          </div>
+
+
+          <!-- =========================
+               7. FRONTEND
+          ========================== -->
+
+          <div id="frontendBrief">
+
+            <h3>7. Frontend Development</h3>
+
+            <label>
+              Do you already have a finished design?
+            </label>
+
+            <div class="checkbox-group">
+
+              <label>
+                <input type="checkbox" name="frontend_design" value="yes">
+                Yes
+              </label>
+
+              <label>
+                <input type="checkbox" name="frontend_design" value="no">
+                No
+              </label>
+
+            </div>
+
+            <label>
+              Figma / design link
+              <input
+                type="text"
+                name="figma_link"
+                placeholder="Paste link if available"
+              />
+            </label>
+
+            <label>
+              Number of pages to develop
+              <input
+                type="number"
+                name="frontend_pages"
+                min="1"
+                placeholder="e.g. 5"
+              />
+            </label>
+
+            <label>
+              Responsive layout
+            </label>
+
+            <div class="checkbox-group">
+
+              <label>
+                <input type="checkbox" name="responsive[]" value="desktop">
+                Desktop
+              </label>
+
+              <label>
+                <input type="checkbox" name="responsive[]" value="tablet">
+                Tablet
+              </label>
+
+              <label>
+                <input type="checkbox" name="responsive[]" value="mobile">
+                Mobile
+              </label>
+
+            </div>
+
+            <label>
+              Do you need animations or interactive elements?
+              <textarea
+                name="animations"
+                rows="2"
+                placeholder="Hover effects, sliders, animations, interactive elements..."
+              ></textarea>
+            </label>
+
+            <label>
+              Is there any functionality you need but don't know how to describe technically?
+              <textarea
+                name="custom_functionality"
+                rows="3"
+                placeholder="Describe what the user should be able to do..."
+              ></textarea>
+            </label>
+
+          </div>
+
+
+          <!-- =========================
+               8. BACKEND
+          ========================== -->
+
+          <div id="backendBrief">
+
+            <h3>8. Backend / Custom Functionality</h3>
+
+            <label>
+              What functionality do you need?
+            </label>
+
+            <div class="checkbox-group">
+
+              <label>
+                <input type="checkbox" name="backend[]" value="form">
+                Contact / Inquiry Form
+              </label>
+
+              <label>
+                <input type="checkbox" name="backend[]" value="booking">
+                Booking / Reservation
+              </label>
+
+              <label>
+                <input type="checkbox" name="backend[]" value="accounts">
+                User Accounts / Login
+              </label>
+
+              <label>
+                <input type="checkbox" name="backend[]" value="payment">
+                Online Payment
+              </label>
+
+              <label>
+                <input type="checkbox" name="backend[]" value="admin">
+                Admin Panel / CMS
+              </label>
+
+              <label>
+                <input type="checkbox" name="backend[]" value="api">
+                API Integration
+              </label>
+
+              <label>
+                <input type="checkbox" name="backend[]" value="custom">
+                Custom Functionality
+              </label>
+
+              <label>
+                <input type="checkbox" name="backend[]" value="unsure">
+                Not sure
+              </label>
+
+            </div>
+
+            <label>
+              How should the functionality work?
+              <textarea
+                name="backend_description"
+                rows="4"
+                placeholder="Describe the process in simple words. For example: register → choose a service → book a date → receive confirmation."
+              ></textarea>
+            </label>
+
+            <label>
+              What information should the website collect?
+              <textarea
+                name="data_collection"
+                rows="3"
+                placeholder="Name, email, phone, order details, booking date, etc."
+              ></textarea>
+            </label>
+
+            <label>
+              Do you need integrations?
+            </label>
+
+            <div class="checkbox-group">
+
+              <label>
+                <input type="checkbox" name="integrations[]" value="telegram">
+                Telegram
+              </label>
+
+              <label>
+                <input type="checkbox" name="integrations[]" value="email">
+                Email
+              </label>
+
+              <label>
+                <input type="checkbox" name="integrations[]" value="crm">
+                CRM
+              </label>
+
+              <label>
+                <input type="checkbox" name="integrations[]" value="payment">
+                Payment System
+              </label>
+
+              <label>
+                <input type="checkbox" name="integrations[]" value="google">
+                Google Services
+              </label>
+
+              <label>
+                <input type="checkbox" name="integrations[]" value="other">
+                Other
+              </label>
+
+            </div>
+
+          </div>
+
+
+          <!-- =========================
+               9. BANNER
+          ========================== -->
+
+          <div id="bannerBrief">
+
+            <h3>9. Banner / Advertising Graphic</h3>
+
+            <label>
+              Where will the banner be used?
+            </label>
+
+            <div class="checkbox-group">
+
+              <label>
+                <input type="checkbox" name="banner_usage[]" value="website">
+                Website
+              </label>
+
+              <label>
+                <input type="checkbox" name="banner_usage[]" value="social">
+                Social Media
+              </label>
+
+              <label>
+                <input type="checkbox" name="banner_usage[]" value="advertising">
+                Online Advertising
+              </label>
+
+              <label>
+                <input type="checkbox" name="banner_usage[]" value="print">
+                Print
+              </label>
+
+            </div>
+
+            <label>
+              Required size / format
+              <input
+                type="text"
+                name="banner_size"
+                placeholder="e.g. 1080 × 1080 px / A4"
+              />
+            </label>
+
+            <label>
+              What product or service is being advertised?
+              <textarea
+                name="banner_product"
+                rows="2"
+              ></textarea>
+            </label>
+
+            <label>
+              What text must be included?
+              <textarea
+                name="banner_text"
+                rows="3"
+              ></textarea>
+            </label>
+
+            <label>
+              Call to Action (CTA)
+              <input
+                type="text"
+                name="banner_cta"
+                placeholder="Buy Now / Learn More / Contact Us..."
+              />
+            </label>
+
+          </div>
+
+
+          <!-- =========================
+               10. PRESENTATION
+          ========================== -->
+
+          <div id="presentationBrief">
+
+            <h3>10. Presentation Design</h3>
+
+            <label>
+              What is the presentation for?
+              <textarea
+                name="presentation_purpose"
+                rows="2"
+                placeholder="Business presentation, pitch deck, educational material..."
+              ></textarea>
+            </label>
+
+            <label>
+              Who is the audience?
+              <textarea
+                name="presentation_audience"
+                rows="2"
+              ></textarea>
+            </label>
+
+            <label>
+              Approximate number of slides
+              <input
+                type="number"
+                name="slide_count"
+                min="1"
+                placeholder="e.g. 15"
+              />
+            </label>
+
+            <label>
+              Required format
+            </label>
+
+            <div class="checkbox-group">
+
+              <label>
+                <input type="checkbox" name="presentation_format[]" value="pdf">
+                PDF
+              </label>
+
+              <label>
+                <input type="checkbox" name="presentation_format[]" value="powerpoint">
+                PowerPoint
+              </label>
+
+              <label>
+                <input type="checkbox" name="presentation_format[]" value="google-slides">
+                Google Slides
+              </label>
+
+            </div>
+
+          </div>
+
+
+          <!-- =========================
+               11. PROJECT DETAILS
+          ========================== -->
+
+          <h3>11. Project Details</h3>
+
+          <label>
+            Budget
+            <input
+              type="text"
+              name="budget"
+              placeholder="e.g. €300–€500"
+            />
+          </label>
+
+          <label>
+            Deadline
+            <input
+              type="text"
+              name="deadline"
+              placeholder="e.g. August 20 or in 3 weeks"
+            />
+          </label>
+
+          <label>
+            Additional services
+          </label>
+
+          <div class="checkbox-group">
+
+            <label>
+              <input type="checkbox" name="additional[]" value="copywriting">
+              Copywriting
+            </label>
+
+            <label>
+              <input type="checkbox" name="additional[]" value="seo">
+              SEO
+            </label>
+
+            <label>
+              <input type="checkbox" name="additional[]" value="domain">
+              Domain
+            </label>
+
+            <label>
+              <input type="checkbox" name="additional[]" value="hosting">
+              Hosting
+            </label>
+
+            <label>
+              <input type="checkbox" name="additional[]" value="support">
+              Website Support
+            </label>
+
+          </div>
+
+
+          <label>
+            Anything else we should know?
+            <textarea
+              name="additional_notes"
+              rows="4"
+              placeholder="Any additional requirements, ideas or important details..."
+            ></textarea>
+          </label>
+
+
+          <!-- =========================
+               FINAL NOTE
+          ========================== -->
+
+          <div class="brief-note">
+            <p>
+              <strong>Important:</strong>
+              Final price is confirmed after reviewing and agreeing on the project scope and requirements.
+            </p>
+          </div>
+
+
+          <button type="submit" class="btn">
+            Submit Brief
+          </button>
+
+
+          <p id="confirmation" class="confirmation" role="status" style="margin-top: 20px;"></p>
+
+        </form>
+
+      </div>
+    </div>
+
+  </section>
+</div>
+
+</main>
+
+    <my-footer></my-footer>
+
+  <!-- Custom JS -->
+<script src="../script.js" defer></script>
+
+</body>
+</html>
