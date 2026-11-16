@@ -1416,6 +1416,7 @@ document
         const email = data.get("email") || "";
         await sendPortfolioEmail({ name, from_name: name, email, from_email: email, reply_to: email,
           subject: "New portfolio project brief", title: "New portfolio project brief", message: fields.join("\n") });
+        window.portfolioTrackLead?.('brief');
         briefForm.reset();
         updateBriefSections();
         showFormStatus(status, "Thank you! Your project brief has been sent.", "success");
@@ -1447,6 +1448,7 @@ document
       try {
         await sendPortfolioEmail({ name, from_name: name, email, from_email: email, reply_to: email,
           phone, subject, title: subject, message: `${data.get("message") || ""}${phone ? `\nPhone: ${phone}` : ""}` });
+        window.portfolioTrackLead?.('contact');
         contactForm.reset();
         showFormStatus(status, "Thank you! Your message has been sent.", "success");
         popup.classList.remove("hidden");
