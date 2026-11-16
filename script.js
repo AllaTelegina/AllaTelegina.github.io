@@ -1,5 +1,57 @@
 const siteRoot = new URL(".", document.currentScript.src);
 
+
+// Shared EmailJS delivery for the contact form and project brief.
+function showFormStatus(element, message, state = "info") {
+  if (!element) return;
+  element.hidden = false;
+  element.dataset.state = state;
+  element.textContent = message;
+}
+
+async function sendPortfolioEmail(parameters) {
+  const config = window.portfolioEmailJS;
+  if (!config?.serviceId || !config?.templateId || !config?.publicKey) {
+    const error = new Error("The contact form is not connected yet.");
+    error.code = "FORM_NOT_CONFIGURED";
+    throw error;
+  }
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 15000);
+  try {
+    const response = await fetch("https://api.emailjs.com/api/v1.0/email/send", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      signal: controller.signal,
+      body: JSON.stringify({
+        service_id: config.serviceId,
+        template_id: config.templateId,
+        user_id: config.publicKey,
+        template_params: { ...parameters, time: new Date().toLocaleString('en-GB', { timeZone: 'Europe/Warsaw', timeZoneName: 'short' }) }
+      })
+    });
+    const text = await response.text();
+    let result;
+    try { result = JSON.parse(text); } catch { result = null; }
+    const confirmed = text.trim() === "OK" || result === "OK" || result?.success === true;
+    if (!response.ok || !confirmed || result?.success === false) {
+      const error = new Error("Email delivery failed");
+      error.deliveryStatus = response.status;
+      error.deliveryDetail = text.trim().slice(0, 240);
+      throw error;
+    }
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
+function submissionErrorMessage(error, item) {
+  if (error.code === "FORM_NOT_CONFIGURED") return "The form is being connected. Please contact me using the LinkedIn link on the home page.";
+  if (error.deliveryStatus) return `Your ${item} could not be sent. Your entries have been kept. EmailJS (${error.deliveryStatus}): ${error.deliveryDetail}`;
+  if (location.protocol === "file:") return `Your ${item} could not be sent. Your entries have been kept. Please open the site through a local web server and try again.`;
+  return `Your ${item} could not be sent. Your entries have been kept. Please try again or contact me on LinkedIn.`;
+}
+
 class MyHeader extends HTMLElement {
   connectedCallback() {
     const home = document.getElementById("home") ? "" : new URL("index.html", siteRoot).href;
@@ -12,7 +64,7 @@ class MyHeader extends HTMLElement {
           <a href="${home}#home" >Home</a>
           <a href="${home}#about">About</a>
           <a href="${home}#services">Services</a>
-          <a href="${home}#portfolio">Portfolio</a>
+          <a href="${new URL('pages/projects.html', siteRoot).href}"${/\/(?:projects|project-[^/]+|graphic-design|web-design|web-development)\.html$/.test(location.pathname) ? ' class="active" aria-current="page"' : ''}>Projects</a>
           <a href="${home}#brief">Brief</a>
           <a href="${home}#contact">Contact</a>
         </nav>
@@ -28,7 +80,7 @@ class MyFooter extends HTMLElement {
     this.innerHTML = `
       <footer class="footer">
         <div class="footer-text">
-          <p>Copyright &copy; 2025 by Alla Telegina | All Rights Reserved.</p>
+          <p>Copyright &copy; ${new Date().getFullYear()} by Alla Telegina | All Rights Reserved.</p>
         </div>
         <div class="footer-iconTop">
           <a href="#" class="scroll-to-top"><i class='bx bx-up-arrow-alt'></i></a>
@@ -345,15 +397,7 @@ const additionalCosts = {
   // ---------------------------------------------------
   // Backend / additional functionality
   // ---------------------------------------------------
-  backend: {
-    form: 40,
-    booking: 100,
-    auth: 180,
-    payment: 180,
-    admin: 200,
-    api: 100,
-    custom: 250
-  },
+
 
   // ---------------------------------------------------
   // Banner adaptation
@@ -438,6 +482,32 @@ const complexityDescriptions = {
 // =====================================================
 // UPDATE PACKAGE DESCRIPTION
 // =====================================================
+function normalizeCalculatorQuantity(input) {
+  const minimum = Number(input.min) || 0;
+  const maximum = input.max === "" ? Infinity : Number(input.max);
+  const value = Number(input.value);
+  input.value = String(Math.min(maximum, Math.max(minimum,
+    Number.isFinite(value) ? Math.trunc(value) : minimum)));
+}
+
+[quantityInput, additionalPages, mainPageQuantity].filter(Boolean).forEach(input => {
+  input.step = "1";
+  input.addEventListener("keydown", event => {
+    if (event.ctrlKey || event.metaKey || event.altKey) return;
+    if (["-", "+", "e", "E", ".", ","].includes(event.key)) event.preventDefault();
+  });
+  input.addEventListener("paste", event => {
+    if (!/^\d+$/.test(event.clipboardData.getData("text").trim())) event.preventDefault();
+  });
+  input.addEventListener("input", () => {
+    if (input.value !== "" &&
+        (!/^\d+$/.test(input.value) || Number(input.value) < Number(input.min))) {
+      normalizeCalculatorQuantity(input);
+    }
+  });
+  input.addEventListener("blur", () => normalizeCalculatorQuantity(input));
+});
+
 function updateComplexityHint() {
   if (
     !complexityHint ||
@@ -520,6 +590,8 @@ serviceSelect?.addEventListener(
       categorySelect.value;
     const serviceKey =
       serviceSelect.value;
+    const quantityLabel = document.getElementById("quantityLabel");
+    if (quantityLabel) quantityLabel.textContent = serviceKey === "presentation" ? "Number of slides:" : "Quantity:";
     hideAdditionalOptions();
     if (
       !category ||
@@ -679,6 +751,7 @@ function hideAdditionalOptions() {
 // =====================================================
 window.calculatePrice =
 function () {
+  [quantityInput, additionalPages, mainPageQuantity].filter(Boolean).forEach(normalizeCalculatorQuantity);
   const category =
     categorySelect?.value;
   const serviceKey =
@@ -733,7 +806,7 @@ function () {
 
   let frontendCost = 0;
 
-  let backendCost = 0;
+
 
   let bannerCost = 0;
 
@@ -910,11 +983,7 @@ function () {
         );
 
 
-        backendCost +=
-          additionalCosts
-            .backend[
-              checkbox.value
-            ] || 0;
+
 
       }
 
@@ -922,8 +991,7 @@ function () {
   );
 
 
-  total +=
-    backendCost;
+
 
 
   // ===================================================
@@ -1036,7 +1104,7 @@ function () {
         <strong>
           Additional functionality:
         </strong>
-        ${backendList}
+        ${backendList}<p class="complexity-hint">Backend is quoted separately after reviewing the brief. It is not included in the estimate below.</p>
       </div>
     `;
   }
@@ -1184,7 +1252,7 @@ function () {
       "
     >
       <strong>
-        Estimated Price:
+        ${selectedBackend.length ? "Design / frontend estimate (backend excluded):" : "Estimated Price:"}
       </strong>
       €${minPrice} – €${maxPrice}
     </div>
@@ -1199,8 +1267,13 @@ function () {
   // OPEN MODAL
   // ===================================================
   const briefLink = document.getElementById("estimateBriefLink");
-  const estimate = `${service.name} · ${packageNames[complexity]} · €${minPrice} – €${maxPrice}`;
-  briefLink.href = `brief.html?${new URLSearchParams({ estimate })}`;
+  const estimate = `${selectedBackend.length ? "Design / frontend only; backend quoted separately. " : ""}${service.name} · ${packageNames[complexity]} · €${minPrice} – €${maxPrice}`;
+  const briefParameters = new URLSearchParams({ estimate, category, service: serviceKey, package: complexity });
+  if (service.type === "quantity") briefParameters.set("quantity", quantityInput.value);
+  if (service.type === "website") briefParameters.set("pages", String(1 + (serviceKey === "landing" || serviceKey === "landing_dev" ? 0 : Number(additionalPages.value))));
+  if (category === "web" && frontendSelect.value === "included") briefParameters.set("frontend", "included");
+  selectedBackend.forEach(value => briefParameters.append("backend", value));
+  briefLink.href = `brief.html?${briefParameters}`;
 
   const modal =
     document.getElementById(
@@ -1268,71 +1341,125 @@ document
 
   const briefForm = document.getElementById("briefForm");
   if (briefForm) {
-    const estimate = new URLSearchParams(window.location.search).get("estimate")?.slice(0, 300);
+    const query = new URLSearchParams(window.location.search);
+    const estimate = query.get("estimate")?.slice(0, 300);
     if (estimate) {
       document.getElementById("calculatorSummaryContent").textContent = estimate;
       document.getElementById("calculatorSummary").style.display = "block";
     }
+    const serviceInputs = [...briefForm.querySelectorAll('input[name="service[]"]')];
+    const sections = {
+      websiteBrief: ["web-design"],
+      visualBrief: ["web-design", "logo", "banner", "social", "presentation"],
+      logoBrief: ["logo"],
+      frontendBrief: ["frontend"],
+      backendBrief: ["backend"],
+      bannerBrief: ["banner", "social"],
+      presentationBrief: ["presentation"]
+    };
+    function updateBriefSections() {
+      const selected = serviceInputs.filter(input => input.checked).map(input => input.value);
+      Object.entries(sections).forEach(([id, services]) => {
+        const section = document.getElementById(id);
+        if (!section) return;
+        section.hidden = !services.some(value => selected.includes(value));
+        section.querySelectorAll("input, select, textarea").forEach(input => { input.disabled = section.hidden; });
+      });
+    }
+    function selectBriefService(value) {
+      const input = serviceInputs.find(input => input.value === value);
+      if (input) input.checked = true;
+    }
+    const service = query.get("service");
+    const category = query.get("category");
+    if (category === "web") selectBriefService("web-design");
+    else if (category === "frontend") selectBriefService("frontend");
+    else if (["logo", "banner", "presentation", "social"].includes(service)) selectBriefService(service);
+    if (query.get("frontend") === "included") selectBriefService("frontend");
+    if (query.has("backend")) selectBriefService("backend");
+    const websiteType = service?.replace("_dev", "");
+    if (["landing", "business", "multipage", "ecommerce"].includes(websiteType)) {
+      briefForm.querySelector(`input[name="website_type[]"][value="${websiteType}"]`)?.setAttribute("checked", "");
+    }
+    const pageCount = Math.max(1, Math.trunc(Number(query.get("pages"))) || 1);
+    if (query.has("pages")) {
+      for (const name of ["page_count", "frontend_pages"]) {
+        const field = briefForm.elements.namedItem(name);
+        if (field) field.value = String(pageCount);
+      }
+    }
+    if (service === "presentation") {
+      const slides = briefForm.elements.namedItem("slide_count");
+      if (slides) slides.value = String(Math.max(1, Math.trunc(Number(query.get("quantity"))) || 1));
+    }
+    query.getAll("backend").forEach(value => {
+      const mapped = value === "auth" ? "accounts" : value;
+      const input = [...briefForm.querySelectorAll('input[name="backend[]"]')].find(input => input.value === mapped);
+      if (input) input.checked = true;
+    });
+    serviceInputs.forEach(input => input.addEventListener("change", updateBriefSections));
+    updateBriefSections();
 
     const status = document.getElementById("confirmation");
     const submitButton = briefForm.querySelector('button[type="submit"]');
-    briefForm.addEventListener("submit", async (event) => {
+    briefForm.addEventListener("submit", async event => {
       event.preventDefault();
+      if (submitButton.disabled || !briefForm.reportValidity()) return;
       const data = new FormData(briefForm);
-      const message = [...data]
-        .filter(([name, value]) => name !== "access_key" && value.trim())
+      const fields = [...data].filter(([, value]) => typeof value === "string" && value.trim())
         .map(([name, value]) => `${name.replace(/\[\]$/, "").replaceAll("_", " ")}: ${value}`);
-      if (estimate) message.unshift(`Preliminary estimate: ${estimate}`);
-
+      if (estimate) fields.unshift(`Preliminary estimate: ${estimate}`);
       submitButton.disabled = true;
-      status.textContent = "Sending your brief…";
+      showFormStatus(status, "Sending your brief…");
       try {
-        const response = await fetch(briefForm.action, {
-          method: "POST",
-          headers: { Accept: "application/json" },
-          body: new URLSearchParams({
-            access_key: data.get("access_key"),
-            subject: "New portfolio project brief",
-            message: message.join("\n"),
-          }),
-        });
-        const result = await response.json();
-        if (!response.ok || !result.success) throw new Error("Brief submission failed");
+        const name = data.get("contact_person") || "";
+        const email = data.get("email") || "";
+        await sendPortfolioEmail({ name, from_name: name, email, from_email: email, reply_to: email,
+          subject: "New portfolio project brief", title: "New portfolio project brief", message: fields.join("\n") });
         briefForm.reset();
-        status.textContent = "Thank you! Your project brief has been sent.";
-      } catch {
-        status.textContent = "Your brief could not be sent. Please try again or use the contact form on the home page.";
+        updateBriefSections();
+        showFormStatus(status, "Thank you! Your project brief has been sent.", "success");
+      } catch (error) {
+        showFormStatus(status, submissionErrorMessage(error, "brief"), "error");
       } finally {
         submitButton.disabled = false;
       }
     });
   }
 
-  // CONTACT FORM + POPUP
-  const contactForm = document.querySelector('#contact form');
+  const contactForm = document.querySelector("#contact form");
   const popup = document.getElementById("popup");
   const closePopupBtn = document.getElementById("closePopup");
-
   if (contactForm && popup && closePopupBtn) {
-    contactForm.addEventListener("submit", async function (e) {
-      e.preventDefault();
-
-      const form = e.target;
-      const data = new FormData(form);
-
-      const response = await fetch(form.action, {
-        method: "POST",
-        body: data
-      });
-
-      if (response.ok) {
+    const status = document.getElementById("contactStatus");
+    const submitButton = contactForm.querySelector('[type="submit"]');
+    contactForm.addEventListener("submit", async event => {
+      event.preventDefault();
+      if (submitButton.disabled || !contactForm.reportValidity()) return;
+      const data = new FormData(contactForm);
+      const name = data.get("name") || "";
+      const email = data.get("email") || "";
+      const phone = data.get("phone") || "";
+      const subject = data.get("subject") || "New portfolio enquiry";
+      submitButton.disabled = true;
+      popup.classList.add("hidden");
+      showFormStatus(status, "Sending your message…");
+      try {
+        await sendPortfolioEmail({ name, from_name: name, email, from_email: email, reply_to: email,
+          phone, subject, title: subject, message: `${data.get("message") || ""}${phone ? `\nPhone: ${phone}` : ""}` });
+        contactForm.reset();
+        showFormStatus(status, "Thank you! Your message has been sent.", "success");
         popup.classList.remove("hidden");
-        form.reset();
+        closePopupBtn.focus();
+      } catch (error) {
+        showFormStatus(status, submissionErrorMessage(error, "message"), "error");
+      } finally {
+        submitButton.disabled = false;
       }
     });
-
-    closePopupBtn.addEventListener("click", function () {
+    closePopupBtn.addEventListener("click", () => {
       popup.classList.add("hidden");
+      submitButton.focus();
     });
   }
 });
@@ -1362,7 +1489,8 @@ function updateActiveNavLink() {
   }
 
   navLinks.forEach(link => {
-    const active = link.hash === `#${currentSectionId}`;
+    const projectsLink = new URL(link.href).pathname.endsWith("/pages/projects.html");
+    const active = projectsLink ? currentSectionId === "portfolio" : link.hash === `#${currentSectionId}`;
     link.classList.toggle('active', active);
     if (active) link.setAttribute('aria-current', 'location');
     else link.removeAttribute('aria-current');
@@ -1413,3 +1541,30 @@ if (document.querySelector('.projects-page .project-item')) {
     project.querySelector('.project-toggle').setAttribute('aria-expanded', 'true');
   });
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+  const filters = [...document.querySelectorAll('[data-filter]')];
+  const cards = [...document.querySelectorAll('#projectGrid .work-card')];
+  function filterProjects(category) {
+    if (!filters.some(button => button.dataset.filter === category)) category = 'all';
+    filters.forEach(button => button.setAttribute('aria-pressed', String(button.dataset.filter === category)));
+    let count = 0;
+    cards.forEach(card => {
+      card.hidden = category !== 'all' && !card.dataset.categories.split(' ').includes(category);
+      if (!card.hidden) count++;
+    });
+    document.getElementById('projectCount').textContent = `${count} ${count === 1 ? 'project' : 'projects'}`;
+  }
+  if (filters.length) {
+    filterProjects(new URLSearchParams(location.search).get('category') || 'all');
+    filters.forEach(button => button.addEventListener('click', () => {
+      const category = button.dataset.filter;
+      filterProjects(category);
+      const url = new URL(location.href);
+      if (category === 'all') url.searchParams.delete('category');
+      else url.searchParams.set('category', category);
+      history.replaceState(null, '', url);
+    }));
+  }
+
+});
