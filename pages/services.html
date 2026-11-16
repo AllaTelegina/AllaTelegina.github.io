@@ -4,7 +4,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="description" content="Portfolio website of Alla Telegina - UI/UX Designer">
-        <title>Services</title>
+        <title>Services | Alla Telegina</title>
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
@@ -28,7 +28,7 @@
     <main>
     <a href="#" class="scroll-to-top"><i class='bx bx-up-arrow-alt'></i></a>
      <nav class="breadcrumbs">
-      <a href="/">Home  </a> / <span>  Services</span>
+      <a href="../index.html">Home  </a> / <span>  Services</span>
     </nav>
 
 <!-- services section design -->
@@ -49,10 +49,7 @@
                 <h3>Frontend Development / Website Layout</h3>
 
                 <p>
-                    I build fast, responsive, and visually polished websites
-                    using HTML, Tailwind CSS, and Alpine.js. Every layout is
-                    optimized for performance, accessibility, and seamless
-                    viewing across all devices.
+                    I build responsive interfaces using HTML, Tailwind CSS, and Alpine.js, with clear layouts and interactive elements for desktop, tablet, and mobile screens.
                 </p>
 
                 <p>
@@ -66,7 +63,7 @@
                     animations, and number of pages.
                 </p>
 
-                <a href="/pages/web-development.html" class="btn">
+                <a href="projects.html?category=development" class="btn">
                     View Projects
                 </a>
 
@@ -97,7 +94,7 @@
                     format, and number of designs.
                 </p>
 
-                <a href="graphic-design.html" class="btn">
+                <a href="projects.html?category=graphic" class="btn">
                     View Projects
                 </a>
 
@@ -128,7 +125,7 @@
                     UX requirements, and design depth.
                 </p>
 
-                <a href="/pages/web-design.html" class="btn">
+                <a href="projects.html?category=design" class="btn">
                     View Projects
                 </a>
 
@@ -430,7 +427,7 @@
             style="display:none;"
         >
 
-            Quantity:
+            <span id="quantityLabel">Quantity:</span>
 
             <input
                 type="number"
@@ -515,10 +512,11 @@
         >
 
             <label>
-                Additional Functionality:
+                Backend &amp; Integrations:
             </label>
 
 
+            <p class="complexity-hint">Select the features you need. Backend and integrations are quoted individually after the brief and are not included in the calculated price. Hosting, subscriptions, and payment provider fees are separate.</p>
             <div class="checkbox-group backend-options">
 
 
@@ -657,9 +655,7 @@
 
 <div id="modalContent" class="modal-content"></div>
 
-<p class="price-note">
-  Final price is confirmed after reviewing the project scope and requirements.
-</p>
+
 
 <a href="brief.html" id="estimateBriefLink" class="btn">Continue to Project Brief</a>
 

@@ -30,7 +30,7 @@
     <a href="#" class="scroll-to-top"><i class='bx bx-up-arrow-alt'></i></a>
 
  <nav class="breadcrumbs">
-      <a href="/">Home </a> / <span> Brief</span>
+      <a href="../index.html">Home </a> / <span> Brief</span>
     </nav>
 
 <!-- services section design -->
@@ -60,30 +60,33 @@
 
       <div class="services-container">
 
-        <form id="briefForm" action="https://api.web3forms.com/submit" method="POST">
-          <input type="hidden" name="access_key" value="YOUR_ACCESS_KEY_HERE">
+        <form id="briefForm" action="https://api.emailjs.com/api/v1.0/email/send" method="POST">
 
           <!-- =========================
                1. CONTACT INFORMATION
           ========================== -->
 
-          <h3>1. Contact Information</h3>
+          <h3>Contact Information</h3>
 
           <label>
             Contact person / position
             <input
               type="text"
-              name="contact_person"
+              name="contact_person" required autocomplete="name"
               placeholder="Full name and position"
             />
           </label>
 
           <label>
-            Contact information
+            Email address
+            <input type="email" name="email" required autocomplete="email" placeholder="Your email address">
+          </label>
+          <label>
+            Other contact details (optional)
             <textarea
               name="contact_info"
               rows="2"
-              placeholder="Email, Telegram, phone..."
+              placeholder="Telegram, phone..."
             ></textarea>
           </label>
 
@@ -92,7 +95,7 @@
                2. PROJECT INFORMATION
           ========================== -->
 
-          <h3>2. Project Information</h3>
+          <h3>Project Information</h3>
 
           <label>
             What services are you interested in?
@@ -130,6 +133,7 @@
               Backend / Custom Functionality
             </label>
 
+            <label><input type="checkbox" name="service[]" value="social">Social Media Design</label>
             <label>
               <input type="checkbox" name="service[]" value="other">
               Other
@@ -170,7 +174,7 @@
                3. PROJECT GOAL
           ========================== -->
 
-          <h3>3. Project Goal</h3>
+          <h3>Project Goal</h3>
 
           <label>
             What is the main goal of the project?
@@ -204,9 +208,9 @@
                4. WEBSITE
           ========================== -->
 
-          <div id="websiteBrief">
+          <div id="websiteBrief" hidden>
 
-            <h3>4. Website</h3>
+            <h3>Website</h3>
 
             <label>
               Type of website
@@ -315,7 +319,7 @@
                5. VISUAL STYLE
           ========================== -->
 
-          <h3>5. Visual Direction</h3>
+          <div id="visualBrief" hidden><h3>Visual Direction</h3>
 
           <label>
             What should the design feel like?
@@ -372,9 +376,9 @@
                6. LOGO
           ========================== -->
 
-          <div id="logoBrief">
+          </div><div id="logoBrief" hidden>
 
-            <h3>6. Logo Design</h3>
+            <h3>Logo Design</h3>
 
             <label>
               Is this a new logo or a redesign?
@@ -383,12 +387,12 @@
             <div class="checkbox-group">
 
               <label>
-                <input type="checkbox" name="logo_type" value="new">
+                <input type="radio" name="logo_type" value="new">
                 New Logo
               </label>
 
               <label>
-                <input type="checkbox" name="logo_type" value="redesign">
+                <input type="radio" name="logo_type" value="redesign">
                 Redesign
               </label>
 
@@ -411,7 +415,7 @@
 
               <label>
                 <input type="checkbox" name="logo_style[]" value="wordmark">
-                Wordmark (Название)
+                Wordmark
               </label>
 
               <label>
@@ -461,9 +465,9 @@
                7. FRONTEND
           ========================== -->
 
-          <div id="frontendBrief">
+          <div id="frontendBrief" hidden>
 
-            <h3>7. Frontend Development</h3>
+            <h3>Frontend Development</h3>
 
             <label>
               Do you already have a finished design?
@@ -472,12 +476,12 @@
             <div class="checkbox-group">
 
               <label>
-                <input type="checkbox" name="frontend_design" value="yes">
+                <input type="radio" name="frontend_design" value="yes">
                 Yes
               </label>
 
               <label>
-                <input type="checkbox" name="frontend_design" value="no">
+                <input type="radio" name="frontend_design" value="no">
                 No
               </label>
 
@@ -550,9 +554,9 @@
                8. BACKEND
           ========================== -->
 
-          <div id="backendBrief">
+          <div id="backendBrief" hidden>
 
-            <h3>8. Backend / Custom Functionality</h3>
+            <h3>Backend / Custom Functionality</h3>
 
             <label>
               What functionality do you need?
@@ -665,9 +669,9 @@
                9. BANNER
           ========================== -->
 
-          <div id="bannerBrief">
+          <div id="bannerBrief" hidden>
 
-            <h3>9. Banner / Advertising Graphic</h3>
+            <h3>Banner / Advertising Graphic</h3>
 
             <label>
               Where will the banner be used?
@@ -738,9 +742,9 @@
                10. PRESENTATION
           ========================== -->
 
-          <div id="presentationBrief">
+          <div id="presentationBrief" hidden>
 
-            <h3>10. Presentation Design</h3>
+            <h3>Presentation Design</h3>
 
             <label>
               What is the presentation for?
@@ -799,7 +803,7 @@
                11. PROJECT DETAILS
           ========================== -->
 
-          <h3>11. Project Details</h3>
+          <h3>Project Details</h3>
 
           <label>
             Budget
@@ -819,38 +823,13 @@
             />
           </label>
 
-          <label>
-            Additional services
-          </label>
-
-          <div class="checkbox-group">
-
-            <label>
-              <input type="checkbox" name="additional[]" value="copywriting">
-              Copywriting
-            </label>
-
-            <label>
-              <input type="checkbox" name="additional[]" value="seo">
-              SEO
-            </label>
-
-            <label>
-              <input type="checkbox" name="additional[]" value="domain">
-              Domain
-            </label>
-
-            <label>
-              <input type="checkbox" name="additional[]" value="hosting">
-              Hosting
-            </label>
-
-            <label>
-              <input type="checkbox" name="additional[]" value="support">
-              Website Support
-            </label>
-
-          </div>
+          <fieldset class="project-readiness"><legend>Materials &amp; Website Setup</legend>
+<p class="complexity-hint">These questions help define the project. Asking for help does not add a paid service or change the estimate. We will agree on any extra work first.</p>
+<label for="textReadiness">Are your texts ready?</label><select id="textReadiness" name="text_readiness"><option value="">Select an option (optional)</option><option value="ready">Yes, I will provide the texts</option><option value="in-progress">They are in progress</option><option value="need-help">I need help planning the content</option><option value="not-applicable">Not applicable</option></select>
+<label for="imageReadiness">Are your photos and visual materials ready?</label><select id="imageReadiness" name="image_readiness"><option value="">Select an option (optional)</option><option value="ready">Yes, I will provide them</option><option value="in-progress">They are in progress</option><option value="need-help">I need help selecting materials</option><option value="not-applicable">Not applicable</option></select>
+<label for="domainReadiness">Do you already have a domain?</label><select id="domainReadiness" name="domain_readiness"><option value="">Select an option (optional)</option><option value="yes">Yes</option><option value="no">Not yet</option><option value="need-guidance">I would like guidance</option><option value="not-applicable">Not applicable</option></select>
+<label for="hostingReadiness">Do you already have hosting?</label><select id="hostingReadiness" name="hosting_readiness"><option value="">Select an option (optional)</option><option value="yes">Yes</option><option value="no">Not yet</option><option value="need-guidance">I would like guidance</option><option value="not-applicable">Not applicable</option></select>
+<p class="complexity-hint">Domain and hosting accounts should be registered in your name. Provider subscriptions and charges are separate unless explicitly included in the proposal.</p></fieldset>
 
 
           <label>
@@ -880,7 +859,7 @@
           </button>
 
 
-          <p id="confirmation" class="confirmation" role="status" style="margin-top: 20px;"></p>
+          <p id="confirmation" class="confirmation" role="status" aria-live="polite" hidden></p>
 
         </form>
 
@@ -895,6 +874,7 @@
     <my-footer></my-footer>
 
   <!-- Custom JS -->
+<script src="../emailjs-config.js" defer></script>
 <script src="../script.js" defer></script>
 
 </body>
