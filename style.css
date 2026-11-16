@@ -842,7 +842,25 @@ transition: .5s ease;
 }
 
 .popup-content button:hover {
-  background: #34d399; /* emerald-400 */
+  background: var(--bg-color);
+  color: var(--main-color);
+}
+
+/* Confirmation follows the site's card and button palette. */
+.popup { background: rgba(0, 0, 0, .45); }
+.popup-content {
+  background: var(--bg-color);
+  color: var(--text-color);
+  border-top: .6rem solid var(--main-color);
+  border-bottom: .6rem solid var(--main-color);
+  border-radius: 2rem;
+}
+.popup-content h3 { color: var(--main-color); }
+.popup-content button {
+  background: var(--main-color);
+  color: #fff;
+  border: .2rem solid var(--main-color);
+  transition: background .2s, color .2s;
 }
 
 
