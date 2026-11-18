@@ -12,7 +12,7 @@
   } catch { /* Consent is optional even when browser storage is unavailable. */ }
 
   window.dataLayer = window.dataLayer || [];
-  const tag = (...args) => window.dataLayer.push(args);
+  function tag() { window.dataLayer.push(arguments); }
   tag('consent', 'default', {
     analytics_storage: 'denied', ad_storage: 'denied',
     ad_user_data: 'denied', ad_personalization: 'denied'
@@ -89,7 +89,15 @@
       }
       if (returnFocus) returnFocus.focus();
     });
-    document.body.append(settings, panel);
+    const footerText = document.querySelector('.footer .footer-text');
+    if (footerText) footerText.append(settings);
+    else document.body.append(settings);
+    if (!footerText && document.querySelector('my-footer')) {
+      customElements.whenDefined('my-footer').then(() => {
+        document.querySelector('.footer .footer-text')?.append(settings);
+      });
+    }
+    document.body.append(panel);
   }
 
   if (choice === 'accepted') start();
